@@ -17,7 +17,6 @@ export default function LoginPage() {
             console.error(error)
         }
     }
-
     return (
     <div className='h-screen flex align-middle items-center'>
     <div className="flex flex-col w-4xl items-center my-10 p-5 mx-auto rounded shadow-xl border-2 border-lime-500 bg-gray-50 ">
