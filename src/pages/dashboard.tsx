@@ -30,13 +30,19 @@ const formatDateTime = (time : string)=>{
         year : "numeric"
     })
 }
-
+    const logoutAccount = async()=>{
+        const response = await axios.post("http://localhost:3000/logout",{},{withCredentials:true})
+        if(response){
+            window.location.href = "/login"
+        }
+        return response
+    }
     return (
   <>
-  <button>logout</button>
-  {data.map(item=>{
+  <button onClick={logoutAccount} className="hover:cursor-pointer bg-red-800 p-1 text-white">logout</button>
+  {data.map((item,index)=>{
     return(
-        <div className="mx-auto my-10 shadow-2xl p-3  rounded w-5xl">
+        <div key={index++} className="mx-auto my-10 shadow-2xl p-3  rounded w-5xl">
             <div className="flex items-center justify-between">
             <p className="font-bold text-xl font-sans my-1">{item.title }</p>
             <p className="text-green-600">{formatDateTime(item.updated_at)}</p>
