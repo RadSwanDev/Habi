@@ -6,6 +6,7 @@ import LoginPage from './pages/Login.tsx'
 import Dashboard from './pages/dashboard.tsx'
 import AddTask from './pages/add.tsx'
 import RegisterPage from './pages/register.tsx'
+import App from './App.tsx'
 
 const route = createBrowserRouter([
   {
@@ -21,6 +22,9 @@ const route = createBrowserRouter([
   },{
     path : "/dashboard/add",
     element : <AddTask/>
+  },{
+    path:"/",
+    element : <App/>
   }
 ])
 

@@ -41,7 +41,7 @@ export default function AddTask() {
      <input value={description} onChange={e => setDescription(e.target.value)} type='text' placeholder="Description" className='border-b-2 border-t-2 w-80 border-lime-500 p-3 rounded-md my-1'/>
      </div><div className='flex flex-col'>
      <label>Status</label>
-     <input value={status} onChange={e => setStatus(e.target.value)} type='text' placeholder="pending" className='border-b-2 border-t-2 w-80 border-lime-500 p-3 rounded-md my-1'/>
+     <input value={status} onChange={e => setStatus(e.target.value)} type='text' placeholder="(pending/inprogress/success)*" className='border-b-2 border-t-2 w-80 border-lime-500 p-3 rounded-md my-1'/>
      </div>
    <div className='flex'>
     <button className='bg-lime-300 p-3 mx-2 border mt-5 border-lime-300 hover:text-green-950 hover:cursor-pointer rounded text-green-900 ' onClick={addTask}>Add</button>
