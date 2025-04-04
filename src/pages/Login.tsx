@@ -10,12 +10,16 @@ export default function LoginPage() {
         setPassword("")
         setUsername("")
 
-        if(response){
+        if(response.status){
             window.location.href="/dashboard"
         }
         }catch(error){
             console.error(error)
         }
+    }
+
+    const googleAuthorization = ()=>{
+        return window.location.href = "http://localhost:3000/auth/google"
     }
     return (
     <div className='h-screen flex align-middle items-center'>
@@ -25,8 +29,8 @@ export default function LoginPage() {
     <input onChange={e=>setPassword(e.target.value)} value={password} type='password' placeholder='********' className='border-2 bg-lime-700 text-white w-80 border-lime-500 p-3 rounded-md my-1'/>
     <button onClick={loginAccount} className='bg-lime-500 p-2 text-white border-2 w-32 my-1 border-lime-500 rounded-md shadow-sm hover:border-lime-600 hover:shadow-md hover:text-lime-700 hover:cursor-pointer'>Login</button>
     <a href='/register' className='my-4 text-lime-500 underline'>Don`t have an account? here</a>
-    <p className='font-semibold text-xl text-lime-900'>SignIn With</p>
-    <button className='flex items-center p-3 my-2 bg-slate-200 font-semibold text-slate-700 rounded-lg'><img src='7123025_logo_google_g_icon.png' width={40}/>Google</button>
+    <p className='font-sem=ibold text-xl text-lime-900'>SignIn With</p>
+    <button className="flex items-center bg-slate-300 p-2 rounded-md font-semibold align-middle" onClick={googleAuthorization}><img src="logo_google_g_icon.png" width={40}/>Google</button>
     </div>  
     </div>
   )
