@@ -4,6 +4,8 @@ interface TaskType {
     description: string;
     updated: string;
     created: string;
+    deleteBtn : ()=> void,
+    editBtn : ()=> void
   }
   
   export default function TaskCard({
@@ -12,7 +14,9 @@ interface TaskType {
     description,
     created,
     updated,
-  }: TaskType) {
+    deleteBtn,
+    editBtn
+  } : TaskType) {
     return (
       <div className="bg-gray-50 shadow-lg rounded-lg p-4 mx-auto w-full max-w-2xl">
         {/* Header */}
@@ -35,10 +39,10 @@ interface TaskType {
           <button className="bg-slate-500 hover:bg-slate-600 text-white py-2 px-4 rounded-lg w-full sm:w-32 transition">
             Status
           </button>
-          <button className="bg-violet-500 hover:bg-violet-600 text-white py-2 px-4 rounded-lg w-full sm:w-32 transition">
+          <button className="bg-violet-500 hover:bg-violet-600 text-white py-2 px-4 rounded-lg w-full sm:w-32 transition" onClick={editBtn}>
             Edit
           </button>
-          <button className="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-32 transition">
+          <button className="bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded-lg w-full sm:w-32 transition" onClick={deleteBtn}>
             Delete
           </button>
         </div>

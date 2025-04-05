@@ -4,7 +4,6 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import LoginPage from './pages/Login.tsx'
 import Dashboard from './pages/dashboard.tsx'
-import AddTask from './pages/add.tsx'
 import RegisterPage from './pages/register.tsx'
 import App from './App.tsx'
 
@@ -19,9 +18,6 @@ const route = createBrowserRouter([
   {
     path : "/dashboard",
     element : <Dashboard/>
-  },{
-    path : "/dashboard/add",
-    element : <AddTask/>
   },{
     path:"/",
     element : <App/>
