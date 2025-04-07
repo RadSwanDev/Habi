@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 export default function AddPopUP({cancelButton} : {cancelButton : () => void}) {
       const [title,setTitle] = useState<string>("")
@@ -13,6 +13,10 @@ export default function AddPopUP({cancelButton} : {cancelButton : () => void}) {
         }
         window.location.href = "/dashboard"
         }
+
+      const setInputValue = useCallback((state : React.Dispatch<React.SetStateAction<string>>)=> (e : React.ChangeEvent<HTMLInputElement>)=>{
+        state(e.target.value)
+      },[])
     
     return (
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 bg-opacity-50 backdrop-blur-sm">
@@ -20,10 +24,10 @@ export default function AddPopUP({cancelButton} : {cancelButton : () => void}) {
          <h1 className="text-center text-2xl font-bold">Add Task</h1>
         <div className='flex flex-col'>
      <label>Title</label>
-     <input value={title} onChange={e =>setTitle(e.target.value)} type='text' placeholder="Title" className='border-b-2 border-t-2  w-80 border-lime-500 p-3 rounded-md my-1'/>
+     <input value={title} onChange={setInputValue(setTitle)} type='text' placeholder="Title" className='border-b-2 border-t-2  w-80 border-lime-500 p-3 rounded-md my-1'/>
      </div><div className='flex flex-col'>
      <label>Description</label>
-     <input value={description} onChange={e => setDescription(e.target.value)} type='text' placeholder="Description" className='border-b-2 border-t-2 w-80 border-lime-500 p-3 rounded-md my-1'/>
+     <input value={description} onChange={setInputValue(setDescription)} type='text' placeholder="Description" className='border-b-2 border-t-2 w-80 border-lime-500 p-3 rounded-md my-1'/>
      </div>
         <select value={status} className='my-2 p-1 border-lime-500 border-2 rounded-full bg-lime-200 text-black' onChange={(e)=>setStatus(e.target.value)}>
         <option value={""}>Select Status</option>

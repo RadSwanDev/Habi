@@ -12,10 +12,60 @@ const [openDelete,setOpenDelete] = useState<boolean>(false)
 const [openAdd,setOpenAdd] = useState<boolean>(false)
 const [selectedId,setSelectedId] = useState<number | null>(null)
 const [openEdit,setOpenEdit] = useState<boolean>(false)
-
-  const [data,setData] = useState<{
-   id:number, title : string, description : string, status : string,updated_at:string, created_at : string
+const [data,setData] = useState<{
+   id:number,
+  title : string, 
+  description : string, 
+  status : string,
+  updated_at:string, 
+  created_at : string
 }[]>([])
+const [detailData,setDetailData] = useState<{
+ title : string, 
+ description : string, 
+ status : string} | null>(null)
+
+const editFeature = async (id : number)=>{
+  try{
+  const response = await axios.get(`http://localhost:3000/dashboard/task/${id}`,{withCredentials : true})
+  setDetailData(response.data.data[0])
+  setOpenEdit(true) 
+}catch(error){
+    console.error("error is in",error)
+  }
+}
+
+
+const changeStatusSuccess = async(id : number)=>{
+  const response = await axios.patch(`http://localhost:3000/dashboard/task/status/success/${id}`,{},{withCredentials : true})
+  setData(data => data.map(task=> task.id === id ? {...task,status : 'completed', updated_at : new Date().toISOString()} : task))
+  return response
+}
+
+const changeStatusInProgress = async(id : number)=>{
+  const response = await axios.patch(`http://localhost:3000/dashboard/task/status/in-progress/${id}`,{},{withCredentials : true})
+  setData(data => data.map(task=> task.id === id ? {...task,status : 'in-progress', updated_at : new Date().toISOString()} : task))
+  return response
+}
+
+const changeStatusPending = async(id : number)=>{
+  const response = await axios.patch(`http://localhost:3000/dashboard/task/status/pending/${id}`,{},{withCredentials : true})
+  setData(data => data.map(task=> task.id === id ? {...task,status : 'pending', updated_at : new Date().toISOString()} : task))
+  return response
+}
+
+
+const statusDecision = (item : string,id : number)=>{
+  if(item === 'completed'){
+    changeStatusPending(id)
+  }else if(item === "pending"){
+    changeStatusInProgress(id)
+  }if(item === "in-progress"){
+    changeStatusSuccess(id)
+  }
+}
+
+
 const navigate = useNavigate()
 useEffect(()=>{
     const fetchingData = async()=> {
@@ -76,9 +126,8 @@ const yesButton = async ()=>{
             setOpenDelete(true)
             setSelectedId(item.id)
           }}
-          editBtn ={ ()=>{
-            setOpenEdit(true)
-          }}
+          editBtn ={()=>editFeature(item.id)}
+          statusBtn={()=>statusDecision(item.status,item.id)}
         />
       </div>
     ))
@@ -91,19 +140,15 @@ const yesButton = async ()=>{
   }
   {
       openAdd && <AddPopUP cancelButton={()=>setOpenAdd(false)}/>
-  }
+  }  
   {
     openEdit && <EditPopUp 
-    titleProps={""}
-    setTitle={()=>{}}
-    descriptionProps={""}
-    setDescription={()=>{}}
-    statusProps={""}
-    setStatus = {()=>{}}
+    title={detailData?.title}
+    status={detailData?.status} 
+    description={detailData?.description}
     cancelButton={()=>setOpenEdit(false)}
     />
   }
-  
   </>
 )
 }

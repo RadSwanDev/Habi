@@ -6,6 +6,7 @@ import LoginPage from './pages/Login.tsx'
 import Dashboard from './pages/dashboard.tsx'
 import RegisterPage from './pages/register.tsx'
 import App from './App.tsx'
+import { SelectedTaskProvider } from './context/selectedId/index.tsx'
 
 const route = createBrowserRouter([
   {
@@ -26,6 +27,8 @@ const route = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <SelectedTaskProvider>
     <RouterProvider router={route}/>  
+    </SelectedTaskProvider>
    </StrictMode>,
 )
