@@ -7,6 +7,7 @@ import Navigation from "../component/Navigation"
 import DeletePopUP from "../component/DeletepopUp"
 import AddPopUP from "../component/AddPopUp"
 import EditPopUp from "../component/EditPopUP"
+import { UseSelectedId } from "../context/selectedId"
 export default function Dashboard() {
 const [openDelete,setOpenDelete] = useState<boolean>(false)
 const [openAdd,setOpenAdd] = useState<boolean>(false)
@@ -24,17 +25,19 @@ const [detailData,setDetailData] = useState<{
  title : string, 
  description : string, 
  status : string} | null>(null)
+const {setIdSelected} = UseSelectedId()
+
 
 const editFeature = async (id : number)=>{
   try{
   const response = await axios.get(`http://localhost:3000/dashboard/task/${id}`,{withCredentials : true})
   setDetailData(response.data.data[0])
   setOpenEdit(true) 
+  setIdSelected(id)
 }catch(error){
     console.error("error is in",error)
   }
 }
-
 
 const changeStatusSuccess = async(id : number)=>{
   const response = await axios.patch(`http://localhost:3000/dashboard/task/status/success/${id}`,{},{withCredentials : true})
@@ -65,18 +68,17 @@ const statusDecision = (item : string,id : number)=>{
   }
 }
 
-
+const fetchingData = async()=> {
+  try{
+      const response = await axios.get("http://localhost:3000/dashboard",{withCredentials:true})
+      setData(response.data.data)    
+  }catch(error){
+  console.error("Unauthorized! Redirecting...",error)
+  navigate("/login")
+  }
+}
 const navigate = useNavigate()
 useEffect(()=>{
-    const fetchingData = async()=> {
-        try{
-            const response = await axios.get("http://localhost:3000/dashboard",{withCredentials:true})
-            setData(response.data.data)    
-        }catch(error){
-        console.error("Unauthorized! Redirecting...",error)
-        navigate("/login")
-        }
-    }
     fetchingData()
 }
 ,[navigate])

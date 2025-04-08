@@ -1,4 +1,8 @@
-import React, { useCallback, useState } from "react"
+/* eslint-disable no-constant-binary-expression */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useCallback, useEffect, useState } from "react"
+import { UseSelectedId } from "../../context/selectedId"
+import axios from "axios"
 
 interface oldTaskType {
 status : string | undefined
@@ -11,20 +15,50 @@ export default function EditPopUp({status,description,title,cancelButton} : oldT
   const [titles,setTitles] = useState<string>('')
   const [descriptions,setDescriptions] = useState<string>('')
   const [statused, setStatused] = useState<string>('')  
-  
+  const {idSelected} = UseSelectedId()
+  const [data,setData] = useState()
   const inputCatch = useCallback((state : React.Dispatch<React.SetStateAction<string>>)=> (e : React.ChangeEvent<HTMLInputElement>)=>state(e.target.value),[])
+
+  const fetchingData = async()=> {
+      const response = await axios.get("http://localhost:3000/dashboard",{withCredentials:true})
+      setData(response.data.data)    
+  }
+
+  useEffect(() => {
+    setTitles(title || "")
+    setDescriptions(description || "")
+    setStatused(status || "")
+  }, [title, description, status])
   
+
+  const changeSaved = async(id : number | null)=>{
+    try{
+      if(!id === null){
+        console.log("No Selected Id")
+        return
+      }
+      const response = await axios.put(`http://localhost:3000/dashboard/edit/${id}`,{
+        title : titles || title,
+        description : descriptions || description,
+        status : statused || status
+      },{withCredentials:true})
+
+      await fetchingData()
+      setTitles("")
+      setDescriptions("")
+      setStatused("")
+      window.location.href = "/dashboard"
+      return response
+    }catch(error){
+      console.error(error)
+    }
+  }
+
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 bg-opacity-50 backdrop-blur-sm">
     <div className="bg-white p-4 rounded-xl shadow-2xl w-3xl max-w-md">
     <h1 className="text-center text-2xl font-extrabold">Edit Task</h1>
     <div className='flex flex-col'>
-    <div className="border-b-2 my-3 border-b-gray-200">
-      <h1 className="text-center font-bold underline text-md">Old Task : </h1>
-      <p className="my-1">Title : {title} </p>
-      <p className="my-1">description : {description} </p>
-      <p className="my-1">status : {status}</p>
-    </div>
    <label>Title</label>
    <input onChange={inputCatch(setTitles)} value={titles} type='text' placeholder="Title" className='border-b-2 border-t-2  w-80 border-lime-500 p-3 rounded-md my-1'/>
    </div><div className='flex flex-col'>
@@ -39,7 +73,7 @@ export default function EditPopUp({status,description,title,cancelButton} : oldT
       <option value={"completed"}>Completed</option>
       </select>
       <div className="flex justify-end">
-          <button className="bg-lime-300 text-green-600 rounded-2xl px-4 py-2 mx-1 w-24  hover:cursor-pointer">
+          <button className="bg-lime-300 text-green-600 rounded-2xl px-4 py-2 mx-1 w-24  hover:cursor-pointer" onClick={()=>changeSaved(idSelected!)}>
             Yes
           </button>
           <button className="bg-red-300 text-red-600 rounded-2xl px-4 py-2 mx-1 w-24 hover:cursor-pointer" onClick={cancelButton}>
