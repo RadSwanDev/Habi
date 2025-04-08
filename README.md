@@ -7,7 +7,7 @@ This is a first of project fullstack website developer with 2 framework inside t
 and use more modules of javascript
 - [@bcrypt](https://www.npmjs.com/package/bcrypt)
 - [@tailwindcss](https://tailwindcss.com/)
-- [express-session]
+- [express-session](https://www.npmjs.com/package/express-session)
 - [mysql](https://www.mysql.com/)
 - [cors](https://www.npmjs.com/package/cors)
 - [cookie-parser](https://www.npmjs.com/package/cookie-parser)
