@@ -1,17 +1,22 @@
 import axios from "axios"
 import { useState } from "react"
+import { UseAlertContext } from "../context/alert"
 
 export default function LoginPage() {
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
+    const {alertStringContext,setAlertContext} = UseAlertContext()
     const loginAccount = async()=>{
         try{
         const response = await axios.post("http://localhost:3000/login",{username,password},{withCredentials : true})
         setPassword("")
         setUsername("")
-
         if(response.status){
-            window.location.href="/dashboard"
+            setTimeout(()=>{
+                window.location.href="/dashboard"
+            },2000)
+            setAlertContext(response.data.message)
+            console.log(alertStringContext)
         }
         }catch(error){
             console.error(error)

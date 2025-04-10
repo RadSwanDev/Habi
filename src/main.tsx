@@ -7,6 +7,8 @@ import Dashboard from './pages/dashboard.tsx'
 import RegisterPage from './pages/register.tsx'
 import App from './App.tsx'
 import { SelectedIdProvide } from './context/selectedId/index.tsx'
+import Profile from './pages/profile.tsx'
+import { AlertContextProvider } from './context/alert/index.tsx'
 
 const route = createBrowserRouter([
   {
@@ -20,6 +22,9 @@ const route = createBrowserRouter([
     path : "/dashboard",
     element : <Dashboard/>
   },{
+    path : "/profile",
+    element : <Profile/>
+  },{
     path:"/",
     element : <App/>
   }
@@ -28,7 +33,9 @@ const route = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <SelectedIdProvide>
+      <AlertContextProvider>
     <RouterProvider router={route}/>  
+    </AlertContextProvider>
     </SelectedIdProvide>
    </StrictMode>,
 )

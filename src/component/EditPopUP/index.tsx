@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { UseSelectedId } from "../../context/selectedId"
 import axios from "axios"
+import { UseAlertContext } from "../../context/alert"
 
 interface oldTaskType {
 status : string | undefined
@@ -17,6 +18,7 @@ export default function EditPopUp({status,description,title,cancelButton} : oldT
   const [statused, setStatused] = useState<string>('')  
   const {idSelected} = UseSelectedId()
   const [data,setData] = useState()
+  const {setAlertContext} = UseAlertContext()   
   const inputCatch = useCallback((state : React.Dispatch<React.SetStateAction<string>>)=> (e : React.ChangeEvent<HTMLInputElement>)=>state(e.target.value),[])
 
   const fetchingData = async()=> {
@@ -47,7 +49,10 @@ export default function EditPopUp({status,description,title,cancelButton} : oldT
       setTitles("")
       setDescriptions("")
       setStatused("")
-      window.location.href = "/dashboard"
+      setTimeout(()=>{
+        window.location.href = "/dashboard"
+      },2000)
+      setAlertContext(response.data.message)
       return response
     }catch(error){
       console.error(error)
@@ -68,9 +73,9 @@ export default function EditPopUp({status,description,title,cancelButton} : oldT
    <label htmlFor="" className="mx-1">Status : </label>
       <select value={statused} className='my-2 p-1 border-lime-500 border-2 rounded-full bg-lime-200 text-black'  onChange={(e)=>setStatused(e.target.value)}>
       <option value={""}>Select Status</option>
-      <option value={"pending"}>Pending</option>
-      <option value={"in-progress"}>In Progress</option>
-      <option value={"completed"}>Completed</option>
+      <option value={"Pending"}>Pending</option>
+      <option value={"In-progress"}>In Progress</option>
+      <option value={"Completed"}>Completed</option>
       </select>
       <div className="flex justify-end">
           <button className="bg-lime-300 text-green-600 rounded-2xl px-4 py-2 mx-1 w-24  hover:cursor-pointer" onClick={()=>changeSaved(idSelected!)}>

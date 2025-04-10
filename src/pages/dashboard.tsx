@@ -8,6 +8,7 @@ import DeletePopUP from "../component/DeletepopUp"
 import AddPopUP from "../component/AddPopUp"
 import EditPopUp from "../component/EditPopUP"
 import { UseSelectedId } from "../context/selectedId"
+import { UseAlertContext } from "../context/alert"
 export default function Dashboard() {
 const [openDelete,setOpenDelete] = useState<boolean>(false)
 const [openAdd,setOpenAdd] = useState<boolean>(false)
@@ -26,8 +27,8 @@ const [detailData,setDetailData] = useState<{
  description : string, 
  status : string} | null>(null)
 const {setIdSelected} = UseSelectedId()
-
-
+const {alertStringContext} = UseAlertContext()
+console.log(alertStringContext)
 const editFeature = async (id : number)=>{
   try{
   const response = await axios.get(`http://localhost:3000/dashboard/task/${id}`,{withCredentials : true})
@@ -39,31 +40,32 @@ const editFeature = async (id : number)=>{
   }
 }
 
+
 const changeStatusSuccess = async(id : number)=>{
   const response = await axios.patch(`http://localhost:3000/dashboard/task/status/success/${id}`,{},{withCredentials : true})
-  setData(data => data.map(task=> task.id === id ? {...task,status : 'completed', updated_at : new Date().toISOString()} : task))
+  setData(data => data.map(task=> task.id === id ? {...task,status : 'Completed', updated_at : new Date().toISOString()} : task))
   return response
 }
 
 const changeStatusInProgress = async(id : number)=>{
   const response = await axios.patch(`http://localhost:3000/dashboard/task/status/in-progress/${id}`,{},{withCredentials : true})
-  setData(data => data.map(task=> task.id === id ? {...task,status : 'in-progress', updated_at : new Date().toISOString()} : task))
+  setData(data => data.map(task=> task.id === id ? {...task,status : 'In-progress', updated_at : new Date().toISOString()} : task))
   return response
 }
 
 const changeStatusPending = async(id : number)=>{
   const response = await axios.patch(`http://localhost:3000/dashboard/task/status/pending/${id}`,{},{withCredentials : true})
-  setData(data => data.map(task=> task.id === id ? {...task,status : 'pending', updated_at : new Date().toISOString()} : task))
+  setData(data => data.map(task=> task.id === id ? {...task,status : 'Pending', updated_at : new Date().toISOString()} : task))
   return response
 }
 
 
 const statusDecision = (item : string,id : number)=>{
-  if(item === 'completed'){
+  if(item === 'Completed'){
     changeStatusPending(id)
-  }else if(item === "pending"){
+  }else if(item === "Pending"){
     changeStatusInProgress(id)
-  }if(item === "in-progress"){
+  }if(item === "In-progress"){
     changeStatusSuccess(id)
   }
 }
