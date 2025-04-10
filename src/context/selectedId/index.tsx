@@ -10,26 +10,6 @@ interface SelectedIdProvideProps{
     children : ReactNode
 }
 
-interface AlertContextType{
-    alertStringContext : string | null,
-    setAlertContext : React.Dispatch<React.SetStateAction<string | null>>    
-} 
-
-interface SelectedAlertProps{
-    children : ReactNode
-}
-const AlertContexts = createContext<AlertContextType | undefined>(undefined)
-
-export function AlertContextProvider({children} : SelectedAlertProps ){
-    const [alertStringContext,setAlertContext] = useState<string | null>(null)
-    return (
-        <>
-        <AlertContexts.Provider value={{alertStringContext,setAlertContext}}>
-            {children}
-        </AlertContexts.Provider>
-        </>
-    )
-}
 
 export function SelectedIdProvide({children} : SelectedIdProvideProps){
    const [idSelected,setIdSelected] = useState<number | null>(null)

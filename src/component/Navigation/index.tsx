@@ -11,6 +11,7 @@ export default function Navigation() {
       telepon: number | null,
       username: string
    }>()
+   const [defaultProfile,setDefaultProfile] = useState<string>("https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png")
 
    const logoutAccount = async () => {
       try {
@@ -49,7 +50,7 @@ export default function Navigation() {
             <div className="flex gap-2 p-1 rounded-full text-white hover:cursor-pointer border-2 mr-5">
                <button onClick={() => window.location.href = "/profile"} className="flex items-center text-white justify-center mx-5 gap-3">
                   <p>{userData?.username}</p>
-                  <img src="/user (2).svg" alt="Profile" />
+                  <img src={`${ userData?.foto_profile !== null ? userData?.foto_profile : defaultProfile}`} alt="Profile" className="rounded-full" width={35} height={35}/>
                </button>
             </div>
          </div>
